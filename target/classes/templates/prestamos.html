@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      
+<style type="text/css" media="screen">select#socio.desactiva{pointer-events: none; cursor: default; background-color: #e9ecef;}</style>
+      
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+	
+	<header th:replace="fragments/header :: header"></header>
+	
+	<div th:replace="fragments/alerts :: alerts"></div>
+	
+	<main th:remove="${libro}?none:body" class="container-flex" style="background-color:#F6F6F6;">
+		<section class="container p-5">
+		
+			<h2 th:text="${h2}" class="mt-4 mb-4"></h2>	
+			
+				<form th:action="@{/prestar/libro/}" method="post" th:object="${libro}" enctype="multipart/form-data" class="mb-4">
+				
+					<div class="form-row col-lg-3 col-md-5 pb-3 float-md-left">
+	      				<!-- Si al editar, el libro tiene una portada en la BD muestrala -->
+          					<img th:if="${libro.fotoPortada}" th:src="'data:image/png;base64,' + ${libro.fotoPortada}" width="100%">              
+          				<!-- Si al crear o editar, el libro no tiene portada en la BD se muestra una por defecto -->
+          					<img th:unless="${libro.fotoPortada}" th:src="@{/images/portadaGenerica.png}" width="100%">
+          				<!-- Crear o editar, la foto portada (display none para qu eno se vea porque no permite quitarlo)-->
+          					<input type="file" name="file" class="form-control-file" style="display:none;" >
+					</div>						
+					<div class="form-row">
+						<div class="col-md-6 pb-3">
+      						<input type="text" th:field="*{referencia}" class="form-control" id="referencia" name="referencia" disabled />
+						</div>
+						<div class="col-md-6 pb-3">
+      						<input type="date" th:field="*{fechaAdquisicion}" class="form-control" id="fecha" name="fecha" disabled />
+						</div>
+					</div>					
+					<div class="form-row">
+						<div class="col-md-6 col-sm-12 pb-3">
+      						<input type="text" th:field="*{titulo}" class="form-control" id="titulo" name="titulo" disabled />
+						</div>
+						<div class="col-md-6 col-sm-12 pb-3">
+      						<input type="text" th:field="*{autor}" class="form-control" id="autor" name="autor" placeholder="Introduce el autor" disabled />
+						</div>		
+					</div>					
+					<div class="form-row">
+						<div class="col-md-12 pb-3">
+      						 <textarea th:field="*{sinopsis}" class="form-control" id="sinopsis" name="sinopsis" rows="5" placeholder="Introduce la sinopsis" disabled ></textarea>
+						</div>
+					</div>					
+					<div class="form-row">
+						<div class="col-md-10 col-sm-12 pb-3">
+      						<select class="form-control form-select-sm" name="socio" th:field="*{socio}" style="cursor:pointer;" th:classappend="${libro.socio} != null ? desactiva">
+        						<option value="">- Elige un socio -</option>
+       							<option th:each="socio : ${listaSocios}" th:text="${socio.nombre} + ' ' + ${socio.apellidos}" th:value="${socio.id}"></option>
+      						</select>
+						</div>
+						<div class="col-md-2 col-sm-12 text-right">
+      						<button type="submit" value="Prestar" class="btn btn-primary">Prestar</button>
+						</div>
+					</div>								
+									
+				</form>
+				
+		</section>			
+	</main>
+		
+	<section class="container p-5">
+		
+		<div class="row mt-4 mb-4">
+			<div class="col-md-6 col-sm-8">
+	      		<h2 th:text="${h2lista}"></h2>
+	      	</div>
+		</div>
+		
+		<div class="table-responsive">
+			<table class="table">
+			  	<thead class="thead-dark">
+					<tr>
+						<th scope="col">Portada</th>
+					    <th scope="col">Referencia</th>
+					    <th scope="col">Título</th>
+					    <th scope="col">Socio</th>
+					    <th scope="col">Acciones</th>			      	
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="libro : ${listaPrestados}">
+					    <th>
+							<img th:if="${libro.fotoPortada}" class="float-left" width="60px" th:src="@{'data:image/png;base64,' + ${libro.fotoPortada}}"/> 
+							<img th:unless="${libro.fotoPortada}" th:src="@{/images/portadaGenerica.png}" class="float-left" width="60px">
+						</th>
+					    <td th:text="${libro.referencia}"></td>
+					    <td th:text="${libro.titulo}"></td>
+					    <td th:text="${libro.socio.nombre} + ' ' +  ${libro.socio.apellidos}"></td>
+					    <td>
+					    	<a class="btn btn-outline-danger btn-sm mb-1"
+					    	style="cursor:pointer;"
+					    	th:onclick="return confirm('Estás seguro que quieres devolver el libro?')"
+					    	th:href="@{/libro/devolver/} + ${libro.referencia}">Devolver</a>
+						</td>
+					</tr>
+		  		</tbody>
+		  	</table>
+		</div>
+		
+	</section>	
+	
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

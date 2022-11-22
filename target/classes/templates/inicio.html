@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+	
+	<header th:replace="fragments/header :: header"></header>
+	
+	<section class="container p-5">
+		<h2 class="mt-4 mb-3" th:text="${h2}"></h2>
+		<p class="mb-5">Estas son las últimas novedades que tenemos disponibles (sin expurgar) en este momento. Puedes ver nuestro catálogo completo en la sección de catálogo.</p>
+		<ul class="list-unstyled" th:each="libro : ${novedades}">
+  			<li class="media my-5">
+	    		<img th:if="${libro.fotoPortada}" class="float-left" width="150px" th:src="@{'data:image/png;base64,' + ${libro.fotoPortada}}"/> 
+				<img th:unless="${libro.fotoPortada}" th:src="@{/images/portadaGenerica.png}" class="float-left" width="150px">
+	   			 <div class="media-body col-md-12">
+	      			<h4 class="mt-0 mb-1" th:text="${libro.titulo}"></h4>
+	      			<h6 class="mt-0 text-uppercase" th:text="${libro.autor}" style="color:#b91c1c;"></h6>
+	      		 	<p th:text="${libro.sinopsis}"></p>
+	    		</div>
+  			</li>
+		</ul>	
+	</section>
+	
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

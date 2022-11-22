@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+	
+	<header th:replace="fragments/header :: header"></header>
+	
+	<div th:replace="fragments/alerts :: alerts"></div>
+	
+	<main th:remove="${socio}?none:body" class="container-flex" style="background-color:#F6F6F6;">
+	
+		<section class="container p-5">
+			<h2 class="mt-4 mb-5" th:text="${h2}"></h2>	
+				<form th:action="@{/nuevo-socio}" method="post" th:object="${socio}" class="mb-4 ">
+					<div class="form-group row">
+						<div class="col-lg-3 col-md-4 col-sm-12 pb-3">
+      						<input type="text" th:field="*{id}" class="form-control" id="id" name="id" placeholder="Nº de socio" th:errorclass="'form-control alert-danger'" disabled/>
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></small>
+						</div>
+						<div class="col-lg-3 col-md-4 col-sm-12 pb-3">
+      						<input type="text" th:field="*{nombre}" class="form-control" id="nombre" name="nombre" placeholder="Introduce un nombre" th:errorclass="'form-control alert-danger'"/>
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+						</div>
+						<div class="col-lg-3 col-md-4 col-sm-12 pb-3">
+      						<input type="text" th:field="*{apellidos}" class="form-control" id="apellidos" name="apellidos" placeholder="Introduce los apellidos" th:errorclass="'form-control alert-danger'"/>
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></small>
+						</div>
+						<div class="col-lg-3 col-md-12 text-right">
+      						<button type="submit" value="guardar" class="btn btn-primary">Guardar</button>
+      						<a type="reset" th:href="@{/nuevo-socio}" style="color:#FFFFFF; cursor:pointer;" class="btn btn-secondary">Cancelar</a>
+						</div>
+					</div>
+				</form>
+		</section>
+			
+	</main>
+		
+	<section class="container p-5">
+	
+		<div class="row mt-4 mb-4">
+			<div class="col-md-6 col-sm-12">
+	      		<h2 th:text="${h2lista}"></h2>
+	      	</div>
+	      	<div class="col-md-6 col-sm-12">			
+	      		<a th:href="@{/nuevo-socio}" th:remove="${socio}?all" class="btn btn-primary float-md-right float-sm-left">Crear socio</a>
+			</div>
+		</div>
+			
+		<div class="table-responsive">
+			<table class="table">
+			  	<thead class="thead-dark">
+					<tr>
+						<th scope="col">Nº de Socio</th>
+					    <th scope="col">Nombre</th>
+					    <th scope="col">Apellidos</th>
+					    <th scope="col" colspan="2">Acciones</th>				      	
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="socio : ${listaSocios}">
+						<th scope="row" th:text="${socio.id}"></th>
+					    <td th:text="${socio.nombre}"></td>
+					    <td th:text="${socio.apellidos}"></td>
+					    <td colspan="2">
+					    	<a th:href="@{/editar/socio/} + ${socio.id}" class="btn btn-primary mb-1 btn-sm" style="color:#FFFFFF; cursor:pointer;">Editar</a>
+					    	<a th:href="@{/eliminar/socio/} + ${socio.id}"
+					    		class="btn btn-danger btn-sm" style="color:#FFFFFF; cursor:pointer;"
+					    		th:onclick="return confirm('Estás seguro que quieres eliminar?')"
+					    		>Eliminar</a>
+						</td>
+					</tr>
+		  		</tbody>
+		  	</table>
+		</div>
+		
+	</section>	
+	
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

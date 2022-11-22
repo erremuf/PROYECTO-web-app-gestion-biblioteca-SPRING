@@ -1,0 +1,53 @@
+<!-- ABRE FOOTER -->
+<footer th:fragment="footer" class="bg-dark text-white">
+	<!-- Abre container -->
+	<div class="container p-5">
+		<!--Abre row-->
+		<div class="row">
+			<!--Abre Grid column-->
+			<div class="col-lg-6 col-md-8 mb-4 mb-md-0">
+				<h5>library<span style="color:#b91c1c;">.</span>app</h5>
+				<p style="color:#D5D1D0;">Esta aplicación es el proyecto final del Máster de Spring y Spring Boot de Ricardo Murillo.
+					Máster impartido por la Ascociación Española de Programadores Informáticos (AEPI).
+					Library App es una aplicación para la gestión de una biblioteca, llevar un control fácilmente de libros, socios y prestamos.					
+				</p>
+			</div>
+			<!--Cierra column-->
+	
+			<!--Abre Grid column-->
+			<div class="col-lg-2 col-md-3 mb-4 mb-md-0 ml-auto">
+				<h5>Navegación</h5>
+				<ul class="list-unstyled mb-0">
+					<li>
+			        	<a class="nav-link" style="padding:0.5rem 0 0 0; color:#D5D1D0;" th:href="@{/inicio}">Inicio</a>
+			        </li>
+			        <li>
+			        	<a class="nav-link" style="padding:0.5rem 0 0 0; color:#D5D1D0;" th:href="@{/socios}">Socios</a>
+			        </li>
+			        <li>
+			        	<a class="nav-link" style="padding:0.5rem 0 0 0; color:#D5D1D0;" th:href="@{/catalogo}">Catálogo</a>
+			        </li>
+			        <li>
+			        	<a class="nav-link" style="padding:0.5rem 0 0 0; color:#D5D1D0;" th:href="@{/prestamos}">Prestamos</a>
+			        </li>
+				</ul>
+			</div>
+			<!--Cierra column--> 
+		</div>
+		<!--Cierra row-->
+	</div>
+	<!-- Cierra container -->
+	
+	<!-- Abre Copyright -->
+	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+		<strong>2022 © </strong>
+		<a class="text-white" href="https://www.linkedin.com/in/murillo-comunicacion-visual/"> Ricardo Murillo Fernández </a>
+	</div>
+	<!-- Cierra Copyright -->
+	<!-- Optional JavaScript -->
+		<!-- jQuery first, then Bootstrap JS -->
+		<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+		<script th:src="@{/js/popper.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+</footer>
+<!-- CIERRA FOOTER -->

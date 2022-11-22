@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+	
+	<header th:replace="fragments/header :: header"></header>
+	
+	<div th:replace="fragments/alerts :: alerts"></div>
+	
+	<main th:remove="${libro}?none:body" class="container-flex" style="background-color:#F6F6F6;">
+		<section class="container p-5">
+		
+			<div th:object="${libro}" th:remove="tag">
+				<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+					<li th:text="${fallo}"></li>
+				</ul>
+			</div>
+		
+			<h2 th:text="${h2}" class="mt-4 mb-4"></h2>	
+			
+				<form th:action="@{/nuevo-libro}" method="post" th:object="${libro}" enctype="multipart/form-data" class="mb-4">
+				
+					<div class="form-row">
+						<div class="col-lg-2 col-md-6 col-sm-12 pb-3">
+      						<input type="text" th:field="*{referencia}" class="form-control" id="referencia" name="referencia" placeholder="Nº de Referencia" disabled />
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('referencia')}" th:errors="*{referencia}"></small>
+						</div>
+						<div class="col-lg-2 col-md-6 col-sm-12 pb-3">
+      						<input type="date" th:field="*{fechaAdquisicion}" class="form-control" id="fecha" name="fecha"/>
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('fechaAdquisicion')}" th:errors="*{fechaAdquisicion}"></small>
+						</div>
+						<div class="col-lg-4 col-md-6 col-sm-12 pb-3">
+      						<input type="text" th:field="*{titulo}" class="form-control" id="titulo" name="titulo" placeholder="Introduce el título"/>
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></small>
+						</div>
+						<div class="col-lg-4 col-md-6 col-sm-12 pb-3">
+      						<input type="text" th:field="*{autor}" class="form-control" id="autor" name="autor" placeholder="Introduce el autor"/>
+      						<small class="form-text text-danger" th:if="${#fields.hasErrors('autor')}" th:errors="*{autor}"></small>
+						</div>		
+					</div>
+					
+					<div class="form-row">
+						<div class="col-md-12 pb-3">
+      						 <textarea th:field="*{sinopsis}" class="form-control" id="sinopsis" name="sinopsis" rows="5" placeholder="Introduce la sinopsis"></textarea>
+						</div>
+					</div>	
+								
+					<div class="col-md-12 pb-3 form-check">
+      					<input type="checkbox" th:field="*{expurgado}" class="form-check-input" id="check" name="expurgado" th:if="${libro.expurgado} == true ? 'checked' : 'none'" />
+      					<label class="form-check-label" for="defaultCheck1"th:text="${libro.expurgado} ? 'El libro está expurgado' : 'Expurgar libro'"></label>
+					</div>					
+					<div class="form-row">
+						<div class="col-md-12 pb-3">
+	      					<input type="file" name="file" class="form-control-file">
+						</div>
+					</div>				
+					<div class="col-md-12 text-right">
+      					<button type="submit" value="guardar" class="btn btn-primary">Guardar</button>
+      					<a type="submit" th:href="@{/catalogo}" style="color:#FFFFFF; cursor:pointer;" class="btn btn-secondary">Cancelar</a>
+					</div>
+					
+				</form>
+				
+		</section>			
+	</main>
+		
+	<section class="container p-5">
+		
+		<div class="row mt-4 mb-4">
+			<div class="col-md-6 col-sm-12">
+	      		<h2 th:text="${h2lista}"></h2>
+	      	</div>
+	      	<div class="col-md-6 col-sm-12">			
+	      		<a th:href="@{/nuevo-libro}" th:remove="${libro}?all" class="btn btn-primary float-md-right float-sm-left">Crear libro</a>
+			</div>
+		</div>
+		
+		<div class="table-responsive">
+			<table class="table">
+			  	<thead class="thead-dark">
+					<tr>
+						<th scope="col">Portada</th>
+					    <th scope="col">Ref.</th>
+					    <th scope="col">Título</th>
+					    <th scope="col">Autor</th>
+					    <th scope="col">Adquisición</th>
+					    <th scope="col">Expurgado</th>
+					    <th scope="col" colspan="4">Acciones</th>				      	
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="libro : ${listaLibros}" th:style="${libro.expurgado} ? 'background-color:rgba(255,0,0,0.1);'">
+						<th>
+							<img th:if="${libro.fotoPortada}" class="float-left" width="60px" th:src="@{'data:image/png;base64,' + ${libro.fotoPortada}}"/> 
+							<img th:unless="${libro.fotoPortada}" th:src="@{/images/portadaGenerica.png}" class="float-left" width="60px">
+						</th>
+					    <td th:text="${libro.referencia}"></td>
+					    <td th:text="${libro.titulo}"></td>
+					    <td th:text="${libro.autor}"></td>
+					    <td th:text="${libro.fechaAdquisicion}"></td>
+					    <td th:text="${libro.expurgado == true} ? 'Si' : 'No'"></td>
+					    <td colspan="4">
+					    	<a th:href="@{/editar/libro/} + ${libro.referencia}" 
+					    		class="btn btn-primary btn-sm mb-1" 
+					    		style="color:#FFFFFF; cursor:pointer;">Editar</a>		    		
+					    	<a th:if="${not libro.expurgado} and ${libro.socio == null} ? disabled" 
+					    		th:text="Prestar" 
+					    		class="btn btn-sm mb-1 btn-warning"
+					    		style="color:#FFFFFF; cursor:pointer;"
+					    		th:href="@{/prestar/libro/} + ${libro.referencia}"></a>					    					    		
+					    		<a th:if="${not libro.expurgado} and ${libro.socio != null} ? disabled"
+					    		th:href="@{/libro/devolver/} + ${libro.referencia}"
+					    		th:text="Devolver" 
+					    		class="btn btn-sm mb-1 btn-outline-danger"
+					    		style="cursor:pointer;"
+					    		th:onclick="return confirm('Estás seguro de que quieres devolver el libro?')"></a>					    					    	
+					    	<a th:text="${libro.expurgado} ? 'Activar' : 'Expurgar'" 
+					    		th:if="${libro.socio == null} ? disabled"
+					    		th:href="@{/libro/expurgar/} + ${libro.referencia}"
+					    		class="btn btn-sm mb-1" 
+					    		th:classappend="${libro.expurgado} ? btn-success : btn-danger" 
+					    		style="color:#FFFFFF; cursor:pointer;" 
+					    		th:onclick="return confirm('Estás seguro de lo que haces?')"></a>
+						</td>
+					</tr>
+		  		</tbody>
+		  	</table>
+		</div>
+		
+	</section>	
+	
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

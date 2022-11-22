@@ -1,0 +1,39 @@
+<header th:fragment="header">
+  <!-- ABRE NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+  	<a class="navbar-brand"  style="font-size: 28px;" th:href="@{/inicio}">library<span style="color:#b91c1c;">.</span>app</a>
+  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    	<span class="navbar-toggler-icon"></span>
+	</button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" th:href="@{/inicio}">INICIO<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/socios}">SOCIOS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/catalogo}">CATÁLOGO</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/prestamos}">PRÉSTAMOS</a>
+          </li>
+        </ul>
+      </div>
+  </nav>
+  <!-- CIERRA NAVBAR -->
+
+  <!-- ABRE BACKGROUND IMG -->
+  <div class="bg-image text-center" style="background-image: url('/images/library_background.webp'); background-size: cover; height: 40vh;">
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.6); height: 40vh;">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+          <h1 class="mb-3">Application <span style="color:#b91c1c;">for your</span> library</h1>
+          <h4 class="mb-3" style="font-weight: lighter; letter-spacing: 0.2em">RICARDO MURILLO</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CIERRA BACKGROUND IMG -->
+</header>
